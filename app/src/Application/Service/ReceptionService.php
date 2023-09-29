@@ -30,7 +30,7 @@ class ReceptionService
             ->findOneByTime(new DateTime($request->getTime()));
             
         if($receptionHour) {
-            return new Response('Taka godzina już istnieje.');
+            return new Response('This time is busy', Response::HTTP_CONFLICT);
         }
 
         $receptionHour = new ReceptionHours();

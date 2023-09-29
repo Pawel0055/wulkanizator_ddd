@@ -40,7 +40,7 @@ class BookingService
         ->findOneByRegistrationNumber($request->getRegistrationNumber());
         
         if(!$receptionHour || $registrationNumber) {
-            return new Response('Niepoprawne dane.');
+            return new Response('Incorrect data', Response::HTTP_UNPROCESSABLE_ENTITY);
         }
 
         $busyBooking = $this->entityManager
@@ -51,7 +51,7 @@ class BookingService
         ]);
         
         if($busyBooking) {
-            return new Response('Godzina zajeta');
+            return new Response('This time is busy', Response::HTTP_CONFLICT);
         }
 
         $booking = new Booking();
