@@ -22,15 +22,24 @@ class BookingRepository extends ServiceEntityRepository implements BookingReposi
         parent::__construct($registry, Booking::class);
     }
 
-   public function findBusyTimes($date): array
-   {
-       return $this->createQueryBuilder('b')
-           ->select('r.id')
-           ->leftJoin('b.receptionHours', 'r')
-           ->andWhere('b.date = :date')
-           ->setParameter('date', $date)
-           ->getQuery()
-           ->getResult()
-       ;
-   }
+    public function save(Booking $entity, bool $flush = false): void
+    {
+        $this->getEntityManager()->persist($entity);
+
+        if ($flush) {
+            $this->getEntityManager()->flush();
+        }
+    }
+
+    public function findBusyTimes($date): array
+    {
+        return $this->createQueryBuilder('b')
+            ->select('r.id')
+            ->leftJoin('b.receptionHours', 'r')
+            ->andWhere('b.date = :date')
+            ->setParameter('date', $date)
+            ->getQuery()
+            ->getResult()
+        ;
+    }
 }

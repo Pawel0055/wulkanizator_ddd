@@ -22,8 +22,17 @@ class ReceptionHoursRepository extends ServiceEntityRepository implements Recept
         parent::__construct($registry, ReceptionHours::class);
     }
 
+    public function save(ReceptionHours $entity, bool $flush = false): void
+    {
+        $this->getEntityManager()->persist($entity);
+
+        if ($flush) {
+            $this->getEntityManager()->flush();
+        }
+    }
+
     public function findFreeDates($busyTimes): array
-   {
+    {
         $qb = $this->createQueryBuilder('r')
            ->select('r.time');
            if($busyTimes) {
@@ -34,5 +43,5 @@ class ReceptionHoursRepository extends ServiceEntityRepository implements Recept
            $query = $qb->getQuery();
            
        return $query->execute();
-   }
+    }
 }
