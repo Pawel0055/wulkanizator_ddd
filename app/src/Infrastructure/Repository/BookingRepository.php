@@ -3,6 +3,7 @@
 namespace App\Infrastructure\Repository;
 
 use App\Domain\Entity\Booking;
+use App\Domain\Repository\BookingRepositoryInterface;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
@@ -14,7 +15,7 @@ use Doctrine\Persistence\ManagerRegistry;
  * @method Booking[]    findAll()
  * @method Booking[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
  */
-class BookingRepository extends ServiceEntityRepository
+class BookingRepository extends ServiceEntityRepository implements BookingRepositoryInterface
 {
     public function __construct(ManagerRegistry $registry)
     {

@@ -3,6 +3,7 @@
 namespace App\Infrastructure\Repository;
 
 use App\Domain\Entity\ReceptionHours;
+use App\Domain\Repository\ReceptionHoursRepositoryInterface;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
@@ -14,14 +15,14 @@ use Doctrine\Persistence\ManagerRegistry;
  * @method ReceptionHours[]    findAll()
  * @method ReceptionHours[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
  */
-class ReceptionHoursRepository extends ServiceEntityRepository
+class ReceptionHoursRepository extends ServiceEntityRepository implements ReceptionHoursRepositoryInterface
 {
     public function __construct(ManagerRegistry $registry)
     {
         parent::__construct($registry, ReceptionHours::class);
     }
 
-    public function findFreeDates($busyTimes)
+    public function findFreeDates($busyTimes): array
    {
         $qb = $this->createQueryBuilder('r')
            ->select('r.time');
