@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Application\Controller;
+namespace App\UI\Api\Controller;
 
 use App\Application\Dto\Request\ReceptionRequestDto;
 use App\Application\Service\ReceptionService;

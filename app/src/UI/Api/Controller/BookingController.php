@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Application\Controller;
+namespace App\UI\Api\Controller;
 
 use App\Domain\Entity\Booking;
 use App\Domain\Entity\ReceptionHours;
