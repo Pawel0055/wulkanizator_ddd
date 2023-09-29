@@ -1,0 +1,14 @@
+{
+    "sqltools.connections": [
+        {
+            "previewLimit": 50,
+            "server": "localhost",
+            "port": 15620,
+            "driver": "PostgreSQL",
+            "username": "wulkanizator_user",
+            "password": "Np51cvRi13o",
+            "name": "wulkanizator",
+            "database": "wulkanizator-ddd"
+        }
+    ]
+}

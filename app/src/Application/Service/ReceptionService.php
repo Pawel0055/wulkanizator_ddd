@@ -3,18 +3,24 @@
 namespace App\Application\Service;
 
 use App\Domain\Entity\ReceptionHours;
+use App\Domain\Event\ReceptionHoursRequestedEvent;
 use DateTime;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 use Symfony\Component\HttpFoundation\Response;
+use Psr\EventDispatcher\EventDispatcherInterface;
 
 class ReceptionService
 {
+    private EventDispatcherInterface $eventDispatcher;
+
     public function __construct(
         private EntityManagerInterface $entityManager,
         private ValidatorInterface     $validator,
+        EventDispatcherInterface $eventDispatcher
     )
     {
+        $this->eventDispatcher = $eventDispatcher;
     }
 
     public function addReceptionHours($request)
@@ -33,15 +39,10 @@ class ReceptionService
             return new Response('This time is busy', Response::HTTP_CONFLICT);
         }
 
-        $receptionHour = new ReceptionHours();
-        $receptionHour->setTime(new DateTime($request->getTime()));
-
-        $this->entityManager->persist($receptionHour);
-        $this->entityManager->flush();
+        $receptionHour = $this->eventDispatcher->dispatch(new ReceptionHoursRequestedEvent($request->getTime()));
    
         $data =  [
-            'id' => $receptionHour->getId(),
-            'time' => $receptionHour->getTime()->format('H:i')
+            'time' => $receptionHour->getTime()
         ];
 
         return $data;
