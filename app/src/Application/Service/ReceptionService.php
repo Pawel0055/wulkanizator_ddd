@@ -10,16 +10,13 @@ use Psr\EventDispatcher\EventDispatcherInterface;
 
 class ReceptionService
 {
-    private EventDispatcherInterface $eventDispatcher;
 
     public function __construct(
         private EntityManagerInterface $entityManager,
         private ValidatorInterface     $validator,
-        EventDispatcherInterface $eventDispatcher
+        private EventDispatcherInterface $eventDispatcher
     )
-    {
-        $this->eventDispatcher = $eventDispatcher;
-    }
+    {}
 
     public function addReceptionHours($request)
     {
