@@ -2,9 +2,7 @@
 
 namespace App\Application\Service;
 
-use App\Domain\Entity\ReceptionHours;
 use App\Domain\Event\ReceptionHoursRequestedEvent;
-use DateTime;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 use Symfony\Component\HttpFoundation\Response;
@@ -31,16 +29,8 @@ class ReceptionService
             return new Response($errorsString);
         }
 
-        $receptionHour = $this->entityManager
-            ->getRepository(ReceptionHours::class)
-            ->findOneByTime(new DateTime($request->getTime()));
-            
-        if($receptionHour) {
-            return new Response('This time is busy', Response::HTTP_CONFLICT);
-        }
-
         $receptionHour = $this->eventDispatcher->dispatch(new ReceptionHoursRequestedEvent($request->getTime()));
-   
+
         $data =  [
             'time' => $receptionHour->getTime()
         ];

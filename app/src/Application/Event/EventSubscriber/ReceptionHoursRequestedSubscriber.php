@@ -10,6 +10,7 @@ use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use DateTime;
 use Doctrine\ORM\EntityManagerInterface;
+use InvalidArgumentException;
 
 class ReceptionHoursRequestedSubscriber implements EventSubscriberInterface
 {
@@ -19,9 +20,24 @@ class ReceptionHoursRequestedSubscriber implements EventSubscriberInterface
 
     public static function getSubscribedEvents(): array
     {
+
         return [
-            ReceptionHoursRequestedEvent::class => 'onCreateReceptionHour',
+            ReceptionHoursRequestedEvent::class => [
+                ['onValidate', 10],
+                ['onCreateReceptionHour', 0],
+            ],
         ];
+    }
+
+    public function onValidate(ReceptionHoursRequestedEvent $event)
+    {
+        $receptionHour = $this->entityManager
+            ->getRepository(ReceptionHours::class)
+            ->findOneByTime(new DateTime($event->getTime()));
+            
+        if($receptionHour) {
+            throw new InvalidArgumentException('time is busy');
+        }
     }
 
     public function onCreateReceptionHour(ReceptionHoursRequestedEvent $event)
