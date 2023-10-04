@@ -11,6 +11,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Serializer\SerializerInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
+use Symfony\Component\HttpFoundation\JsonResponse;
 
 #[Route('/reception', name: 'reception_')]
 class ReceptionHoursController extends AbstractController
@@ -36,6 +37,9 @@ class ReceptionHoursController extends AbstractController
         } catch (Exception $e) {
             echo $e->getMessage() . "\n";
         }
-        return $this->json($receptionHours);
+        
+        return new JsonResponse([
+            'time'=> $receptionHours->getTime()
+        ]);
     }
 }

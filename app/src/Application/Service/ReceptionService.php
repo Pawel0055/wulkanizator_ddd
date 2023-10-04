@@ -7,6 +7,7 @@ use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 use Symfony\Component\HttpFoundation\Response;
 use Psr\EventDispatcher\EventDispatcherInterface;
+use Symfony\Component\HttpFoundation\JsonResponse;
 
 class ReceptionService
 {
@@ -28,10 +29,6 @@ class ReceptionService
 
         $receptionHour = $this->eventDispatcher->dispatch(new ReceptionHoursRequestedEvent($request->getTime()));
 
-        $data =  [
-            'time' => $receptionHour->getTime()
-        ];
-
-        return $data;
+        return $receptionHour;
     }
 }

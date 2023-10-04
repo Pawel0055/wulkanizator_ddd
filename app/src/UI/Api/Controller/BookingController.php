@@ -127,9 +127,7 @@ class BookingController extends AbstractController
         }
         
         foreach ($freeDates as $freeDate) {
-            $data[] = [
-                'time' => $freeDate["time"]->format('H:i')
-            ];
+            $data[] = $freeDate["time"]->format('H:i');
          }
  
          return $this->json([
